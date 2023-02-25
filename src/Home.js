@@ -11,11 +11,8 @@ import LeadSchema from "./schema";
 import { fetchCall } from "./fetchCall"
 
 const Home = () => {
+  const [data, setData] = useState([]);
   const navigate = useNavigate();
-  const showClick = () => {
-    navigate("/show");
-  };
-
 
   const submitData = async (data) => {
     if (Object.entries(data).length > 0) {
