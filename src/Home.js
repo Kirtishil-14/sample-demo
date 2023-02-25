@@ -16,19 +16,12 @@ const Home = () => {
     navigate("/show");
   };
 
-  const [formData, setFormData] = useState({});
 
   const submitData = async (data) => {
     if (Object.entries(data).length > 0) {
-      let payload = {
-        name: data.name,
-        email: data.email,
-        phone: data.phone,
-        developer: data.developer,
-        message: data.message
-      }
       try {
-        const responsedata = await fetchCall("create", "POST", payload);
+        await fetchCall("", "PUT", data);
+        window.reload();
       } catch (error) {
         console.log("error: ", error);
       }
@@ -39,7 +32,6 @@ const Home = () => {
   return (
     <div className="App">
       <button
-        disabled={!Object.entries(formData).length > 0}
         type="button"
         className="btn btn-secondary mr-5"
         onClick={() => navigate("/show")}
@@ -51,7 +43,6 @@ const Home = () => {
         <AutoForm
           schema={LeadSchema}
           onSubmit={(e) => {
-            setFormData(e);
             submitData(e);
           }}
         >

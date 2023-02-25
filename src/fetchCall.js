@@ -1,14 +1,23 @@
-const baseUrl = "http://localhost:3000/"
+
+const baseUrl = "https://europe-west3-upids-v3.cloudfunctions.net/v3-hack/user/"
 
 const fetchCall = async (url, method, payload) => {
+    let data;
     const apiUrl = baseUrl + url;
-    console.log("fetchCall",payload);
-    fetch(apiUrl, {
+    
+    await fetch(apiUrl, {
         method: method,
-        body: payload
+        body: JSON.stringify(payload),
+        headers: {
+            "Content-Type": "application/json; charset=UTF-8",
+        },
     }).then(response => response.json())
-        .then(dat => { return dat })
+        .then(dat => {
+            data = dat
+        })
         .catch(error => console.error("Error:", error));
+
+    return data;
 };
 
 export { fetchCall };

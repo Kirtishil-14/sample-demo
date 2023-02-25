@@ -1,73 +1,53 @@
-import React from "react";
-import { useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { fetchCall } from "./fetchCall"
 
-const data = [
-  {
-    name: 'Sujit Mandal',
-    email: 'msujit017@gmail.com',
-    phone: 8779957294,
-    developer: 'frontend',
-    message: ''
-  },
-  {
-    name: 'Sujit Mandal',
-    email: 'msujit017@gmail.com',
-    phone: 8779957294,
-    developer: 'frontend',
-    message: ''
-  },
-  {
-    name: 'Sujit Mandal',
-    email: 'msujit017@gmail.com',
-    phone: 8779957294,
-    developer: 'frontend',
-    message: ''
-  },
-  {
-    name: 'Sujit Mandal',
-    email: 'msujit017@gmail.com',
-    phone: 8779957294,
-    developer: 'frontend',
-    message: ''
-  },
-  {
-    name: 'Sujit Mandal',
-    email: 'msujit017@gmail.com',
-    phone: 8779957294,
-    developer: 'frontend',
-    message: ''
-  },
+import LeadSchema from "./schema";
 
-];
 
 const MainPage = (props) => {
-  const { state } = useLocation();
+  const [data, setData] = useState();
+  const [allKeys, setAllKeys] = useState(Object.keys(LeadSchema.schema.properties));
+
+  const getAllData = async () => {
+    try {
+      const responseData = await fetchCall("all", "GET",);
+      setData(responseData)
+    } catch (error) {
+      console.log("error: ", error);
+    }
+  };
+
+  useEffect(() => {
+    getAllData();
+  }, []);
+
+  const deleteUser = async (email) => {
+    let payload = { email };
+    await fetchCall(email, "DELETE", payload);
+    getAllData();
+  }
+
 
   return <div>
     <table className="table table-dark">
       <thead>
         <th >#</th>
-        <td className="table-active">Name</td>
-        <td>Email</td>
-        <td>Phone</td>
-        <td>Developer</td>
-        <td>Message</td>
-        <td>Options</td>
+        {allKeys.length > 0 && allKeys.map((title) => {
+          return <td className="table-active text-uppercase">{title}</td>
+        })}
       </thead>
       <tbody>
-        {data.map((dat, i) => {
+        {data?.length > 0 && data.map((dat, i) => {
           return (
             <tr key={i}>
               <th >{i}</th>
-              <td className="table-active">{dat.name}</td>
-              <td>{dat.email}</td>
-              <td>{dat.phone}</td>
-              <td>{dat.developer}</td>
-              <td>{dat.message}</td>
+              {allKeys.length > 0 && allKeys.map((title, i) => {
+                return <td className="table-active">{dat[allKeys[i]]}</td>
+              })}
               <td>
-                <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                  <button type="button" class="btn btn-danger">DELETE</button>
-                  <button type="button" class="btn btn-warning">UPDATE</button>
+                <div className="btn-group" role="group" aria-label="Basic mixed styles example">
+                  <button type="button" className="btn btn-danger" onClick={() => deleteUser(dat.email)}>DELETE</button>
+                  <button type="button" className="btn btn-warning">UPDATE</button>
                 </div>
               </td>
             </tr>
