@@ -10,6 +10,12 @@ const schema = {
   properties: {
     name: { type: "string" },
     email: { type: "string" },
+    experience: {
+      type: "integer",
+    },
+    salary: {
+      type: "integer",
+    },
     role: {
       type: "string",
       options: [
@@ -23,13 +29,6 @@ const schema = {
         },
       ],
     },
-    experience: {
-      description: "work experience in years",
-      type: "integer",
-      minimum: 0,
-      maximum: 100,
-    },
-
     info: {
       type: "string",
       uniforms: {
@@ -37,7 +36,7 @@ const schema = {
       },
     },
   },
-  required: ["name", "email"],
+  required: ["name", "email", "info", "salary"],
 };
 
 function createValidator(schema) {
