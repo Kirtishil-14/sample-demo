@@ -12,8 +12,6 @@ const schema = {
     email: { type: "string" },
     phone: {
       type: "integer",
-      minimum: 0,
-      maximum: 100,
     },
     developer: {
       type: "string",
